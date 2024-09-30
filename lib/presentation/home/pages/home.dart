@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:music_player/common/widgets/appbar/app_bar.dart';
 import 'package:music_player/core/configs/assets/app_images.dart';
 import 'package:music_player/core/configs/assets/app_vector.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
+  late TabController _tabController;
+
+  void initState(){
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +36,8 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _homeTopCard()
+            _homeTopCard(),
+            _tabs()
           ],
         ),
       ),
@@ -45,13 +59,43 @@ class HomePage extends StatelessWidget {
 
             Align(
               alignment: Alignment.bottomRight,
-              child: Image.asset(
-                AppImages.homeArtist
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: 60
+                ),
+                child: Image.asset(
+                  AppImages.homeArtist
+                ),
               ),
             )
           ],
         ),
       ),
+    );
+  }
+
+  Widget _tabs() {
+    return TabBar(
+      controller: _tabController,
+      labelColor: context.isDarkMode ? Colors.white : Colors.black,
+      padding: EdgeInsets.symmetric(
+        vertical: 40,
+        horizontal: 16
+      ),
+      tabs: [
+      Text(
+        'News'
+      ),
+      Text(
+        'Videos'
+      ),
+      Text(
+        'Artist'
+      ),
+      Text(
+        'Podcast'
+      )
+    ],
     );
   }
 }
